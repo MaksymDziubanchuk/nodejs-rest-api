@@ -7,5 +7,5 @@ module.exports = {
     validateBody,
     handleSaveError,
     isValidId,
-    validateFavoriteBody
+    validateFavoriteBody,
 }
