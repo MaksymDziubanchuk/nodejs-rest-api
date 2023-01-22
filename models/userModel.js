@@ -20,6 +20,10 @@ const userSchema = new Schema(
             enum: subscriptionOptions,
             default: 'starter',
         },
+        avatarURL: {
+            type: String,
+            required: true,
+        },
         token: {
             type: String,
             default: null,
