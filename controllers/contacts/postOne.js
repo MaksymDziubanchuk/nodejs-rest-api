@@ -1,7 +1,8 @@
 const { Contact } = require('../../models/contactModel')
 
 const postOne = async (req, res, next) => {
-    const newContact = await Contact.create(req.body)
+    const { _id: owner } = req.user
+    const newContact = await Contact.create({ ...req.body, owner })
 
     return res.status(201).json(newContact)
 }

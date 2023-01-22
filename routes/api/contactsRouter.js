@@ -1,10 +1,11 @@
 const express = require('express')
 
-const ctrl = require('../../controllers/contacts')
-
 const router = new express.Router()
 
 const { ctrlWrapper } = require('../../helpers')
+
+const ctrl = require('../../controllers/contacts')
+const { authenticate } = require('../../controllers/auth')
 
 const {
     validateBody,
@@ -14,14 +15,20 @@ const {
 
 const { schemas } = require('../../models/contactModel')
 
-router.get('/', ctrlWrapper(ctrl.getAll))
+router.get('/', authenticate, ctrlWrapper(ctrl.getAll))
 
-router.get('/:contactId', isValidId, ctrlWrapper(ctrl.getOne))
+router.get('/:contactId', authenticate, isValidId, ctrlWrapper(ctrl.getOne))
 
-router.post('/', validateBody(schemas.addSchema), ctrlWrapper(ctrl.postOne))
+router.post(
+    '/',
+    authenticate,
+    validateBody(schemas.addSchema),
+    ctrlWrapper(ctrl.postOne)
+)
 
 router.put(
     '/:contactId',
+    authenticate,
     isValidId,
     validateBody(schemas.addSchema),
     ctrlWrapper(ctrl.updateOne)
@@ -29,11 +36,17 @@ router.put(
 
 router.patch(
     '/:contactId/favorite',
+    authenticate,
     isValidId,
     validateFavoriteBody(schemas.updateFavoriteSchema),
     ctrlWrapper(ctrl.updateStatusContact)
 )
 
-router.delete('/:contactId', isValidId, ctrlWrapper(ctrl.deleteOne))
+router.delete(
+    '/:contactId',
+    authenticate,
+    isValidId,
+    ctrlWrapper(ctrl.deleteOne)
+)
 
 module.exports = router
